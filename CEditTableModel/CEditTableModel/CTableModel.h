@@ -24,6 +24,16 @@ public:
     ///3、更新数据
     bool updateTable(QList<DataStructure> dataStructureList);
 
+    /************************二、数据编辑*****************************/
+    /***
+     * 1、设置数据可编辑
+     * 2、给每行首个单元格设置复选框(只有点击复选框区域才能复选)
+     *    复选框使用建议使用代理
+     * *************************************************************/
+    ///4、设置可编辑数据标志
+    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    /// 5、保存编辑后的数据
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
 private:
     QList<DataStructure> m_dataStructureList;

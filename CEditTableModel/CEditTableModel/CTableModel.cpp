@@ -38,7 +38,7 @@ QVariant CTableModel::data(const QModelIndex &index, int role) const
     if(!index.isValid())
         return QVariant();
 
-    if(role == Qt::DisplayRole)
+    if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
         switch(index.column())
         {
@@ -63,6 +63,12 @@ QVariant CTableModel::data(const QModelIndex &index, int role) const
         }
     }
 
+    if(role == Qt::CheckStateRole)
+    {
+        if(index.column() == 0)
+            return m_dataStructureList.at(index.row()).isChecked ? Qt::Checked : Qt::Unchecked;
+    }
+
     return QVariant();
 }
 
@@ -72,4 +78,60 @@ bool CTableModel::updateTable(QList<DataStructure> dataStructureList)
     m_dataStructureList = dataStructureList;
     endResetModel();
     return true;
+}
+
+Qt::ItemFlags CTableModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags flags= Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+    if(index.column() ==0)
+        flags |= Qt::ItemIsUserCheckable;
+    return flags;
+}
+
+bool CTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(!index.isValid())
+        return false;
+
+    if(role == Qt::EditRole)
+    {
+        QString str = value.toString();
+        switch (index.column()) {
+        case 0:
+            m_dataStructureList[index.row()].col0 = str;
+            break;
+        case 1:
+            m_dataStructureList[index.row()].col1 = str;
+            break;
+        case 2:
+            m_dataStructureList[index.row()].col2 = str;
+            break;
+        case 3:
+            m_dataStructureList[index.row()].col3 = str;
+            break;
+        case 4:
+            m_dataStructureList[index.row()].col4 = str;
+            break;
+        case 5:
+            m_dataStructureList[index.row()].col5 = str;
+            break;
+        default:
+            break;
+        }
+        emit dataChanged(index,index);
+        return true;
+    }
+
+    if(role == Qt::CheckStateRole)
+    {
+        if(index.column() == 0)
+        {
+            m_dataStructureList[index.row()].isChecked = value.toBool();
+            emit dataChanged(index,index);
+            return true;
+        }
+
+    }
+
+    return false;
 }
