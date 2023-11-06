@@ -1,0 +1,4 @@
+#忽略QT编译生成的build文件夹
+**/build-*:
+#忽略.pro.user文件
+*.pro.user
