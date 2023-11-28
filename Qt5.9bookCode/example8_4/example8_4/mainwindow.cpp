@@ -38,7 +38,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::iniGraphicsSystem()
 {
-    //sccene逻辑坐标定义
+    //sccene逻辑坐标定义,setPost(x,y)默认为view的中心
     QRectF rect(-200 , -100 , 400 , 200);//左上角坐标，宽高
     scene = new QGraphicsScene(rect);
     ui->graphicsView->setScene(scene);
@@ -80,7 +80,7 @@ void MainWindow::on_mouseMovePoint(QPoint point)
 
     //转换为scene的坐标
     QPointF pointScene = ui->graphicsView->mapToScene(point);
-    labSceneCord->setText(QString::asprintf("Scene 坐标: %d, %d" , pointScene.x() , pointScene.y()));
+    labSceneCord->setText(QString::asprintf("Scene 坐标: %.0f, %.0f" , pointScene.x() , pointScene.y()));
 }
 
 void MainWindow::on_mouseCliked(QPoint point)
@@ -92,7 +92,7 @@ void MainWindow::on_mouseCliked(QPoint point)
     if(item != NULL)
     {
         QPointF pointItem = ui->graphicsView->mapFromScene(pointScene);
-        labItemCord->setText(QString::asprintf("Item 坐标: %d, %d" , pointItem.x() , pointItem.y()));
+        labItemCord->setText(QString::asprintf("Item 坐标: %.0f, %.0f" , pointItem.x() , pointItem.y()));
     }
 
 }
