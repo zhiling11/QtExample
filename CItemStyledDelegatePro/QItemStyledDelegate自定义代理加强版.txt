@@ -1,3 +1,6 @@
+第一列实现checkbox和文本绘制
+第二列实现button
+
 第四列toInt()，自动显示spinbox
 第五列实现spinbox
 第六列实现下拉框
