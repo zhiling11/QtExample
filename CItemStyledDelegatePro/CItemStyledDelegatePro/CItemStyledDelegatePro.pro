@@ -40,7 +40,7 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-QMAKE_CXXFLAGS += -execution-charset:utf-8
+QMAKE_CXXFLAGS += /execution-charset:utf-8
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

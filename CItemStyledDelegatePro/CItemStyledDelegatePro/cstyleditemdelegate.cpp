@@ -1,5 +1,6 @@
 #include "cstyleditemdelegate.h"
 
+#include "DataStructure.h"
 #include <QSpinBox>
 #include <QComboBox>
 #include <QApplication>
@@ -68,7 +69,30 @@ void CStyledItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *mode
 
 void CStyledItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if(index.column() == 2)
+    if(index.column() == 0)
+    {
+        QRect rect = option.rect;
+        QRect rectCheckBox= rect.adjusted(2, 2, -(rect.width() - rect.height())-2 , -2);//复选框
+        QRect rectText= rect.adjusted(rect.height() +2 , 2 , -2 , -2);//文本
+
+        QStyleOptionComboBox comboBox;
+        comboBox.rect = rectCheckBox;
+        comboBox.state |= QStyle::State_Enabled | QStyle::State_Active;
+        bool isChecked = index.data(Qt::UserRole+1).value<DataStructure>().isChecked;
+        if(isChecked)
+        {
+            comboBox.state |= QStyle::State_On;
+        }
+        else
+        {
+            comboBox.state |= QStyle::State_Off;
+        }
+
+        QApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox , &comboBox , painter);
+        QApplication::style()->drawItemText(painter, rectText, Qt::AlignLeft|Qt::AlignVCenter , QPalette() , true , index.data(Qt::DisplayRole).toString());
+        return;
+    }
+    else if(index.column() == 2)
     {
         //绘制双按钮
         QRect rect = option.rect;//获取单元格大小
@@ -93,7 +117,20 @@ bool CStyledItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
 {
     if(event->type() == QEvent::MouseButtonRelease)
     {
-        if(index.column() == 2)
+        if(index.column() == 0)
+        {
+            bool isChecked = index.data(Qt::UserRole+1).value<DataStructure>().isChecked;
+            if(isChecked)
+            {
+                model->setData(index , false , Qt::UserRole+1);
+            }
+            else
+            {
+                model->setData(index , true , Qt::UserRole+1);
+            }
+            return true;
+        }
+        else if(index.column() == 2)
         {
             //获取点击位置
             QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);

@@ -2,6 +2,7 @@
 #define DATASTRUCTURE_H
 
 #include <QString>
+#include <QMetaType>
 class DataStructure
 {
 public:
@@ -16,5 +17,6 @@ public:
 
     bool isChecked;
 };
+Q_DECLARE_METATYPE(DataStructure)
 
 #endif // DATASTRUCTURE_H

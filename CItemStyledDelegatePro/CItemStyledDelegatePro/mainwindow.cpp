@@ -19,6 +19,7 @@ void MainWindow::initialize()
 {
     m_tableModel = new CTableModel(this);
     CStyledItemDelegate * cStyledItemDelegate = new CStyledItemDelegate(this);
+    ui->tableView->setItemDelegateForColumn(0, cStyledItemDelegate);
     ui->tableView->setItemDelegateForColumn(2, cStyledItemDelegate);
     ui->tableView->setItemDelegateForColumn(4, cStyledItemDelegate);
     ui->tableView->setItemDelegateForColumn(5, cStyledItemDelegate);

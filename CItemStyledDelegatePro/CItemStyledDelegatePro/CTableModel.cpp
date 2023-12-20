@@ -69,6 +69,10 @@ QVariant CTableModel::data(const QModelIndex &index, int role) const
             break;
         }
     }
+    if(role == Qt::UserRole+ 1)
+    {
+        return QVariant::fromValue(m_dataStructureList.at(index.row()));
+    }
 
     return QVariant();
 }
@@ -121,6 +125,17 @@ bool CTableModel::setData(const QModelIndex &index, const QVariant &value, int r
         }
         emit dataChanged(index,index);
         return true;
+    }
+
+    if(role == Qt::UserRole +1)
+    {
+        if(value.canConvert<bool>())
+        {
+            bool isChecked = value.toBool();
+            m_dataStructureList[index.row()].isChecked = isChecked;
+            emit dataChanged(index , index);//通知试图刷新
+            return true;
+        }
     }
     return false;
 }
